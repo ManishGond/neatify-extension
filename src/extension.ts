@@ -11,80 +11,85 @@ let webviewProvider: NeatifyWebviewProvider | undefined;
 async function optimizeFile() {
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
+    vscode.window.showErrorMessage("No active text editor found!");
     return;
   }
 
-  if (webviewProvider) {
-  }
+  try {
+    // Execute optimization steps sequentially
+    await removeUnusedImports();
+    await removeUnusedVariables();
+    await refactorToCamelCase();
+    await suggestVarToLetConst();
 
-  removeUnusedImports();
-  removeUnusedVariables();
-  refactorToCamelCase();
-  suggestVarToLetConst();
+    vscode.window.showInformationMessage("File optimized!");
 
-  vscode.window.showInformationMessage("File optimized!");
-
-  if (webviewProvider) {
-    webviewProvider.showOptimizationResult(
-      "Optimization completed successfully!\n- Removed unused imports\n- Removed unused variables\n- Refactored to camelCase\n- Converted var to let/const"
-    );
+    if (webviewProvider) {
+      webviewProvider.showOptimizationResult(
+        "Optimization completed successfully!\n- Removed unused imports\n- Removed unused variables\n- Refactored to camelCase\n- Converted var to let/const"
+      );
+    }
+  } catch (error) {
+    vscode.window.showErrorMessage(`Optimization failed: ${error}`);
   }
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("Code Analyzer Extension is now active!");
+  console.log("Neatify Extension is now active!");
 
-  const provider = new NeatifyWebviewProvider(context.extensionUri);
-  webviewProvider = provider;
+  try {
+    // Register the webview view provider
+    const provider = new NeatifyWebviewProvider(context.extensionUri);
+    webviewProvider = provider;
 
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider(
-      NeatifyWebviewProvider.viewType,
-      provider
-    )
-  );
+    context.subscriptions.push(
+      vscode.window.registerWebviewViewProvider(
+        NeatifyWebviewProvider.viewType,
+        provider
+      )
+    );
+  } catch (error) {
+    console.error("Failed to register webview:", error);
+  }
 
-  let disposable1 = vscode.commands.registerCommand(
-    "neatify.showFileSummary",
-    () => {
+  // Register all commands
+  const disposables = [
+    vscode.commands.registerCommand("neatify.showFileSummary", () => {
+      console.log("showFileSummary command executed");
       checkCurrentFileOpen();
-    }
-  );
-  let disposable2 = vscode.commands.registerCommand(
-    "neatify.removeUnusedVariables",
-    () => {
-      removeUnusedVariables();
-    }
-  );
-  let disposable3 = vscode.commands.registerCommand(
-    "neatify.refactorToCamelCase",
-    () => {
-      refactorToCamelCase();
-    }
-  );
-  let disposable4 = vscode.commands.registerCommand(
-    "neatify.removeUnusedImports",
-    () => removeUnusedImports()
-  );
-  let disposable5 = vscode.commands.registerCommand(
-    "neatify.convertVarToLet",
-    () => suggestVarToLetConst()
-  );
-  let disposableOptimize = vscode.commands.registerCommand(
-    "neatify.optimizeFile",
-    () => optimizeFile()
-  );
+    }),
 
-  context.subscriptions.push(
-    disposable1,
-    disposable2,
-    disposable3,
-    disposable4,
-    disposable5,
-    disposableOptimize
+    vscode.commands.registerCommand("neatify.removeUnusedVariables", () => {
+      removeUnusedVariables();
+    }),
+
+    vscode.commands.registerCommand("neatify.refactorToCamelCase", () => {
+      refactorToCamelCase();
+    }),
+
+    vscode.commands.registerCommand("neatify.removeUnusedImports", () => {
+      removeUnusedImports();
+    }),
+
+    vscode.commands.registerCommand("neatify.convertVarToLet", () => {
+      suggestVarToLetConst();
+    }),
+
+    vscode.commands.registerCommand("neatify.optimizeFile", () => {
+      optimizeFile();
+    }),
+  ];
+
+  // Add all disposables to context
+  disposables.forEach((disposable) => context.subscriptions.push(disposable));
+
+  // Show activation message
+  vscode.window.showInformationMessage(
+    "Neatify is now active! Use the Neatify panel or commands to optimize your code."
   );
 }
 
 export function deactivate() {
   webviewProvider = undefined;
+  console.log("Neatify Extension is now deactivated.");
 }

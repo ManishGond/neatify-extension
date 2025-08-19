@@ -83,7 +83,7 @@ Initial release of Neatify featuring:
 
 ## Support
 
-For issues, feature requests, or contributions, please visit our [GitHub repository](https://github.com/your-repo/neatify).
+For issues, feature requests, or contributions, please visit our [GitHub repository](https://github.com/ManishGond/neatify-extension).
 
 ## License
 
