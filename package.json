@@ -2,11 +2,23 @@
   "name": "neatify",
   "displayName": "Neatify",
   "description": "Clean, refactor, and optimize your JavaScript/TypeScript code in real-time 🚀",
-  "version": "0.0.5",
-  "publisher": "Manish N Gond",
+  "version": "0.0.7",
+  "publisher": "ManishGond",
   "engines": {
     "vscode": "^1.103.0"
   },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onCommand:neatify.showFileSummary",
+    "onCommand:neatify.removeUnusedVariables",
+    "onCommand:neatify.refactorToCamelCase",
+    "onCommand:neatify.removeUnusedImports",
+    "onCommand:neatify.convertVarToLet",
+    "onCommand:neatify.optimizeFile"
+  ],
   "categories": [
     "Formatters",
     "Linters",
@@ -94,10 +106,13 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p .",
-    "watch": "tsc -watch -p .",
-    "package": "vsce package"
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map"
+  },
+  "dependencies": {
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -108,6 +123,9 @@
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
     "eslint": "^9.32.0",
-    "typescript": "^5.9.2"
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.9.2",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1"
   }
 }
