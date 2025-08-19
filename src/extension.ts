@@ -4,9 +4,6 @@ import { refactorToCamelCase } from "./functions/refactorToCamelCase";
 import { checkCurrentFileOpen } from "./functions/checkCurrentFileOpen";
 import { suggestVarToLetConst } from "./functions/suggestVarToLetConst";
 import { removeUnusedImports } from "./functions/removeUnusedImports";
-import { NeatifyWebviewProvider } from "./webview";
-
-let webviewProvider: NeatifyWebviewProvider | undefined;
 
 async function optimizeFile() {
   const editor = vscode.window.activeTextEditor;
@@ -23,12 +20,6 @@ async function optimizeFile() {
     await suggestVarToLetConst();
 
     vscode.window.showInformationMessage("File optimized!");
-
-    if (webviewProvider) {
-      webviewProvider.showOptimizationResult(
-        "Optimization completed successfully!\n- Removed unused imports\n- Removed unused variables\n- Refactored to camelCase\n- Converted var to let/const"
-      );
-    }
   } catch (error) {
     vscode.window.showErrorMessage(`Optimization failed: ${error}`);
   }
@@ -36,21 +27,6 @@ async function optimizeFile() {
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("Neatify Extension is now active!");
-
-  try {
-    // Register the webview view provider
-    const provider = new NeatifyWebviewProvider(context.extensionUri);
-    webviewProvider = provider;
-
-    context.subscriptions.push(
-      vscode.window.registerWebviewViewProvider(
-        NeatifyWebviewProvider.viewType,
-        provider
-      )
-    );
-  } catch (error) {
-    console.error("Failed to register webview:", error);
-  }
 
   // Register all commands
   const disposables = [
@@ -90,6 +66,5 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-  webviewProvider = undefined;
   console.log("Neatify Extension is now deactivated.");
 }
