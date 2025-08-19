@@ -8,11 +8,30 @@
     "vscode": "^1.103.0"
   },
   "categories": [
-    "Linters"
+    "Formatters",
+    "Linters",
+    "Other"
   ],
+  "keywords": [
+    "javascript",
+    "typescript",
+    "refactor",
+    "optimize",
+    "clean code",
+    "linting"
+  ],
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#4F46E5",
+    "theme": "dark"
+  },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/your-username/neatify-extension"
+  },
+  "homepage": "https://github.com/your-username/neatify-extension",
+  "bugs": {
+    "url": "https://github.com/your-username/neatify-extension/issues"
   },
   "main": "./dist/extension.js",
   "activationEvents": [
@@ -43,27 +62,33 @@
     "commands": [
       {
         "command": "neatify.showFileSummary",
-        "title": "Neatify: File Summary"
+        "title": "Neatify: File Summary",
+        "category": "Neatify"
       },
       {
         "command": "neatify.removeUnusedVariables",
-        "title": "Neatify: Remove Unused Variables"
+        "title": "Neatify: Remove Unused Variables",
+        "category": "Neatify"
       },
       {
         "command": "neatify.refactorToCamelCase",
-        "title": "Neatify: Refactor to camelCase"
+        "title": "Neatify: Refactor to camelCase",
+        "category": "Neatify"
       },
       {
         "command": "neatify.removeUnusedImports",
-        "title": "Neatify: Remove Unused Imports"
+        "title": "Neatify: Remove Unused Imports",
+        "category": "Neatify"
       },
       {
         "command": "neatify.convertVarToLet",
-        "title": "Neatify: Convert var → let/const"
+        "title": "Neatify: Convert var → let/const",
+        "category": "Neatify"
       },
       {
         "command": "neatify.optimizeFile",
-        "title": "Neatify: Optimize Entire File"
+        "title": "Neatify: Optimize Entire File",
+        "category": "Neatify"
       }
     ],
     "keybindings": [

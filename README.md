@@ -2,7 +2,7 @@
 
 Clean, refactor, and optimize your JavaScript/TypeScript code in real-time 🚀
 
-![Neatify Logo](images/logo.svg)
+![Neatify Logo](images/icon.png)
 
 ## Features
 
